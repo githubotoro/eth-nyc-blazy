@@ -18,5 +18,15 @@ module.exports = {
   etherscan: {
     // apiKey: process.env.POLYGONSCAN_API_KEY,
     apiKey: process.env.ZKEVM_POLYGONSCAN_API_KEY,
+    customChains: [
+      {
+        network: 'zkevm',
+        chainId: 1442,
+        urls: {
+          apiURL: 'https://testnet-zkevm.polygonscan.com/api',
+          browserURL: 'https://testnet-zkevm.polygonscan.com',
+        },
+      },
+    ],
   },
 };
