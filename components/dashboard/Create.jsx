@@ -62,7 +62,6 @@ export const Create = () => {
             one_liner: one_liner,
           }),
         });
-        const data = await res.json();
       }
     } catch (err) {
       console.log(err);
@@ -96,7 +95,7 @@ export const Create = () => {
             />
             <button
               disabled={one_liner === '' || title == '' ? true : false}
-              onClick={() => {}}
+              onClick={submitIdea}
               className={clsx(
                 'appearance-none rounded-lg border-none py-1 font-bold uppercase text-isWhite drop-shadow-sm ',
                 one_liner === '' || title == ''

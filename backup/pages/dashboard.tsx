@@ -189,7 +189,7 @@ export default function DashboardPage() {
   return (
     <>
       <Head>
-        <title>Blazy -- Making web3 ideas pass 'The Mom Test'</title>
+        <title>Privy Demo</title>
       </Head>
 
       <div className="flex h-full flex-col px-6 pb-6">
