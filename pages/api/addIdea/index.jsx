@@ -5,7 +5,7 @@ import {doc, getDoc, setDoc, increment, FieldValue} from 'firebase/firestore';
 
 export default async function handler(req, res) {
   try {
-    const docRef = doc(db, 'blazy', req.body.id);
+    const docRef = doc(db, 'blazyIdeas', req.body.id);
 
     await setDoc(docRef, {
       address: req.body.address,

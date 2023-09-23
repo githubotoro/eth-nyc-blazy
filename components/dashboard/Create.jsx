@@ -3,6 +3,7 @@ import {useStore} from '../store';
 import {usePrivy} from '@privy-io/react-auth';
 import {useWallets} from '@privy-io/react-auth';
 import {ethers} from 'ethers';
+import clsx from 'clsx';
 
 import {Idea} from './Idea';
 
@@ -44,6 +45,30 @@ export const Create = () => {
     getIdeaList();
   });
 
+  const submitIdea = async () => {
+    try {
+      if (authenticated) {
+        const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy');
+        const privyAddress = embeddedWallet.address;
+
+        const res = await fetch('/api/addIdea', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            address: privyAddress,
+            title: title,
+            one_liner: one_liner,
+          }),
+        });
+        const data = await res.json();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <React.Fragment>
       {activeTab == 2 ? (
@@ -69,7 +94,16 @@ export const Create = () => {
               value={one_liner}
               className="appearance-none rounded-lg border-none bg-isWhite/90 text-isLabelLightSecondary drop-shadow-sm focus:bg-isWhite focus:text-isBlack"
             />
-            <button className="appearance-none rounded-lg border-none bg-isGreenLight py-1 font-bold uppercase text-isWhite drop-shadow-sm hover:bg-isGreenLightEmphasis">
+            <button
+              disabled={one_liner === '' || title == '' ? true : false}
+              onClick={() => {}}
+              className={clsx(
+                'appearance-none rounded-lg border-none py-1 font-bold uppercase text-isWhite drop-shadow-sm ',
+                one_liner === '' || title == ''
+                  ? 'disabled cursor-disabled bg-isRedLight hover:bg-isRedLightEmphasis'
+                  : 'bg-isGreenLight hover:bg-isGreenLightEmphasis',
+              )}
+            >
               submit
             </button>
           </div>
