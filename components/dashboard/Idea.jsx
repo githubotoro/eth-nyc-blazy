@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import React, {useState} from 'react';
 
-export const Idea = ({idea, ideaIndex, isEditable}) => {
+export const Idea = ({idea}) => {
+  console.log(idea);
   const getImage = (index) => {
     if (index === 0) {
       return <Image src="/assets/spectreseek.webp" fill className="absolute object-cover" />;
@@ -36,7 +37,7 @@ export const Idea = ({idea, ideaIndex, isEditable}) => {
         </div>
 
         <div className="absolute -z-10 h-full w-full">
-          <div className="relative h-full w-full">{getImage(ideaIndex % 4)}</div>
+          <div className="relative h-full w-full">{getImage(idea.id % 4)}</div>
         </div>
       </div>
     </React.Fragment>

@@ -2,9 +2,7 @@
   "extends": "@tsconfig/node16-strictest-esm/tsconfig.json",
   "compilerOptions": {
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     },
     "allowJs": true,
     "noEmit": true,
@@ -14,14 +12,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.jsx",
-    "**/*.js"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/store/index.tsx"],
+  "exclude": ["node_modules", "**/*.jsx", "**/*.js"]
 }

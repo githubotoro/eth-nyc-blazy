@@ -43,6 +43,7 @@ import GitHubIcon from '../components/icons/social/github';
 import AppleIcon from '../components/icons/social/apple';
 
 import {Tabs, Swipe, Create} from '../components/dashboard';
+import {useStore} from '@/components/store';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -51,6 +52,8 @@ export default function DashboardPage() {
   const [signError, setSignError] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [activeWallet, setActiveWallet] = useState<WalletWithMetadata | null>(null);
+
+  const {privyAddress, setPrivyAddress} = useStore();
 
   const {setConfig} = useContext(PrivyConfigContext);
 
@@ -133,6 +136,10 @@ export default function DashboardPage() {
 
   const embeddedWallet = wallets.filter((wallet) => wallet.walletClient === 'privy')?.[0];
 
+  // useEffect(() => {
+  //   setPrivyAddress(embeddedWallet?.address);
+  // }, [activeWallet]);
+
   const numAccounts = linkedAccounts.length || 0;
   const canRemoveAccount = numAccounts > 1;
 
@@ -198,7 +205,7 @@ export default function DashboardPage() {
           <Tabs />
           <div className="no-scrollbar flex h-full max-h-[78vh] w-full flex-col space-y-3 overflow-y-scroll rounded-2xl bg-isGrayLightEmphasis6 p-3">
             <Swipe />
-            <Create />
+            {/* <Create /> */}
           </div>
         </div>
       </div>
