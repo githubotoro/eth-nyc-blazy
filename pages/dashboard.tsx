@@ -194,9 +194,9 @@ export default function DashboardPage() {
 
       <div className="flex h-full flex-col px-6 pb-6">
         <Header />
-        <div className="text-md my-3 flex h-fit w-full flex-col pb-5 drop-shadow-sm">
-          <div className="flex h-full w-full flex-col  space-y-3 rounded-2xl bg-isGrayLightEmphasis6 p-3">
-            <Tabs />
+        <div className="text-md my-3 flex h-fit w-full flex-col space-y-3 pb-5 drop-shadow-sm">
+          <Tabs />
+          <div className="no-scrollbar flex h-full max-h-[78vh] w-full flex-col space-y-3 overflow-y-scroll rounded-2xl bg-isGrayLightEmphasis6 p-3">
             <Swipe />
             <Create />
           </div>

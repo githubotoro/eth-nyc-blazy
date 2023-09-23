@@ -4,13 +4,14 @@ import {usePrivy} from '@privy-io/react-auth';
 import {useWallets} from '@privy-io/react-auth';
 import {ethers} from 'ethers';
 
+import {Idea} from './Idea';
+
 export const Swipe = () => {
   const {wallets} = useWallets();
   const {activeTab, sessionKey, setSessionKey} = useStore();
   const [totalIdeas, setTotalIdeas] = useState(0);
   const [swipeList, setSwipeList] = useState([]);
-
-  console.log(swipeList);
+  const [idea, setIdea] = useState({});
 
   const {authenticated, ready} = usePrivy();
 
@@ -79,9 +80,7 @@ export const Swipe = () => {
     <React.Fragment>
       {activeTab == 1 ? (
         <div className="flex w-full flex-col place-content-center items-center">
-          <div className="aspect-square w-full max-w-lg overflow-hidden rounded-xl bg-isWhite drop-shadow-sm">
-            <div className="h-1/6 w-full bg-isRedDark"></div>
-          </div>
+          <Idea idea={idea} ideaIndex={ideaIndex} />
         </div>
       ) : (
         <></>

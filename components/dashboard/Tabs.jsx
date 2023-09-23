@@ -7,7 +7,7 @@ export const Tabs = () => {
   const BASE_BUTTON =
     'bg rounded-lg py-1 px-3 font-bold hover:bg-isBlueLight hover:text-isWhite drop-shadow-sm';
   const ACTIVE = 'bg-isBlueLight text-isWhite';
-  const PASSIVE = 'bg-isLabelLightSecondary text-isWhite/90';
+  const PASSIVE = 'bg-isGrayLightEmphasis6 text-isBlack/50';
   const ANIMATE = 'transition-all duration-200 ease-in-out';
 
   return (
