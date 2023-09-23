@@ -11,7 +11,6 @@ import PrivyConfigContext, {
   PRIVY_STORAGE_KEY,
   defaultDashboardConfig,
 } from '../lib/hooks/usePrivyConfig';
-import Icon from './icon.png';
 
 function MyApp({Component, pageProps, router}: AppProps) {
   const [config, setConfig] = useState<PrivyConfigContextType['config']>(() => {
