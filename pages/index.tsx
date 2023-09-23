@@ -118,82 +118,18 @@ export default function LoginPage() {
           }}
           className="button button-primary fixed bottom-4 right-4 left-4 z-[1] items-center gap-x-2 rounded-[13px] px-3 py-3 text-[14px] text-white md:hidden md:py-0"
         >
-          Launch Privy
+          Login
         </button>
         <CanvasContainer>
-          <CanvasSidebarAuthConfig readyToSetTheme={readyToSetTheme} className="flex flex-col" />
+          <div>
+            adasd as dasd assadsa dassaasd as dsa asd asds ds das as dsad sad asdsa dsd sad asd
+            asdsa d
+          </div>
           {/* start: canvas-panel */}
-          <Canvas className="md:pl-20 md:pr-8">
+          <Canvas className="min-h-screen md:place-content-center">
             {/* start: modal-column */}
-            <div id="render-privy" className="z-[2] mx-auto pt-8 md:mx-0 md:pt-0" />
+            <div id="render-privy" className="z-[2] mx-auto pt-8 md:mx-0 md:h-full md:pt-0 " />
             {/* end: modal-column */}
-            <CanvasRow className="hidden md:flex">
-              {/* start: cta */}
-              <CanvasCard className="!border-none bg-gradient-to-r from-privy-color-accent-light to-red-300 !p-1">
-                <div className="rounded-lg bg-privy-color-background p-4">
-                  <CanvasCardHeader>
-                    <PrivyBlobIcon className="h-5 w-5" strokeWidth={2} />
-                    Explore Privy
-                  </CanvasCardHeader>
-                  <div className="pb-2 text-sm text-privy-color-foreground-3">
-                    The easiest way to onboard all of your users to web3
-                  </div>
-                  <div className="text-sm">Sign in to the demo to access the dev tools.</div>
-                  <div className="flex gap-x-2 pt-2">
-                    <a
-                      href="https://docs.privy.io"
-                      className="button h-[1.625rem] gap-x-2 pl-3 pr-2 text-sm"
-                    >
-                      Explore the Docs <ArrowRightIcon className="h-4 w-4" strokeWidth={2} />
-                    </a>
-                  </div>
-                </div>
-              </CanvasCard>
-              {/* end: cta */}
-              <CanvasCard>
-                <CanvasCardHeader>
-                  <ArrowDownOnSquareIcon className="h-5 w-5" strokeWidth={2} />
-                  Export this configuration
-                </CanvasCardHeader>
-                <div className="pb-2 text-sm text-privy-color-foreground-3">
-                  Privy&apos;s components can be customized{' '}
-                  <a
-                    href="https://docs.privy.io/guide/theming"
-                    target="_blank"
-                    rel="noreferrer nopener"
-                  >
-                    client-side
-                  </a>
-                  , so you can easily reuse this theme in your application.
-                </div>
-                <div className="flex gap-x-2 pt-2">
-                  <div
-                    className="button h-[1.625rem] cursor-pointer gap-x-2 pl-3 pr-2 text-sm"
-                    onClick={() => {
-                      const {
-                        // @ts-expect-error internal api
-                        _render,
-                        ...rest
-                      } = config;
-
-                      const providerCode = `<PrivyProvider config={${JSON.stringify(
-                        rest,
-                      )}}>{children}</PrivyProvider>`;
-                      navigator.clipboard.writeText(providerCode).catch((error) => {
-                        console.error('Failed to copy text to clipboard:', error);
-                      });
-                      setCopied(true);
-                      setTimeout(() => {
-                        setCopied(false);
-                      }, 2000);
-                    }}
-                  >
-                    <ClipboardDocumentIcon className="h-4 w-4" strokeWidth={2} />
-                    {copied ? 'Copied!' : 'Copy to Clipboard'}
-                  </div>
-                </div>
-              </CanvasCard>
-            </CanvasRow>
           </Canvas>
           {/* end: canvas-panel */}
         </CanvasContainer>

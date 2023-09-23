@@ -17,16 +17,16 @@ function MyApp({Component, pageProps, router}: AppProps) {
     // Pull out the appearance from local storage if it exists
     const storedConfigRaw =
       typeof window === 'undefined' ? null : window.localStorage.getItem(PRIVY_STORAGE_KEY);
-    const storedConfig = storedConfigRaw ? JSON.parse(storedConfigRaw) : null;
-    const defaultConfig = router?.route?.includes('dashboard')
-      ? defaultDashboardConfig
-      : defaultIndexConfig;
-    return {
-      ...defaultConfig,
-      appearance: storedConfig?.appearance
-        ? storedConfig.appearance
-        : defaultIndexConfig.appearance,
-    };
+    // const storedConfig = storedConfigRaw ? JSON.parse(storedConfigRaw) : null;
+    // const defaultConfig = router?.route?.includes('dashboard')
+    //   ? defaultDashboardConfig
+    //   : defaultIndexConfig;
+    // return {
+    //   ...defaultConfig,
+    //   appearance: storedConfig?.appearance
+    //     ? storedConfig.appearance
+    //     : defaultIndexConfig.appearance,
+    // };
   });
 
   const setConfigWithAppearanceStorage = useCallback(
@@ -54,7 +54,15 @@ function MyApp({Component, pageProps, router}: AppProps) {
         rel="stylesheet"
       />
       <PlausibleProvider domain="demo.privy.io">
-        <PrivyConfigContext.Provider value={{config, setConfig: setConfigWithAppearanceStorage}}>
+        <PrivyConfigContext.Provider
+          value={{
+            config,
+            setConfig: setConfigWithAppearanceStorage,
+            embeddedWallets: {
+              noPromptOnSignature: true, // defaults to false
+            },
+          }}
+        >
           <PrivyProvider
             appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || ''}
             // @ts-expect-error internal api
