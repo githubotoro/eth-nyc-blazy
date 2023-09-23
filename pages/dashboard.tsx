@@ -42,7 +42,7 @@ import PrivyBlobIcon from '../components/icons/outline/privy-blob';
 import GitHubIcon from '../components/icons/social/github';
 import AppleIcon from '../components/icons/social/apple';
 
-import {Tabs, Swipe} from '../components/dashboard';
+import {Tabs, Swipe, Create} from '../components/dashboard';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -194,10 +194,11 @@ export default function DashboardPage() {
 
       <div className="flex h-full flex-col px-6 pb-6">
         <Header />
-        <div className="text-md my-3 min-h-screen w-full   pb-5 drop-shadow-sm">
-          <div className="flex w-full flex-col space-y-3 rounded-2xl bg-isGrayLightEmphasis6 p-3">
+        <div className="text-md my-3 flex h-fit w-full flex-col pb-5 drop-shadow-sm">
+          <div className="flex h-full w-full flex-col  space-y-3 rounded-2xl bg-isGrayLightEmphasis6 p-3">
             <Tabs />
             <Swipe />
+            <Create />
           </div>
         </div>
       </div>
