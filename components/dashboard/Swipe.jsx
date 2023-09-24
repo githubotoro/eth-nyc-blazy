@@ -27,7 +27,7 @@ export const Swipe = () => {
     };
 
     getPrivyAddress();
-  });
+  }, [activeTab, authenticated, ready]);
 
   useEffect(() => {
     const getSwipeList = async () => {

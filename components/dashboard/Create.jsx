@@ -33,7 +33,7 @@ export const Create = () => {
     };
 
     getPrivyAddress();
-  });
+  }, [activeTab]);
 
   const getIdeaList = async () => {
     try {
@@ -134,8 +134,6 @@ export const Create = () => {
 
     return ideaObject;
   };
-
-  console.log(ideaList);
 
   return (
     <React.Fragment>
