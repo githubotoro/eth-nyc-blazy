@@ -9,7 +9,12 @@ import {Idea} from './Idea';
 
 export const Create = () => {
   const {wallets} = useWallets();
-  const {activeTab, sessionKey, setSessionKey} = useStore();
+  const {activeTab, sessionKey, setSessionKey, contract, privyAddress, setPrivyAddress} =
+    useStore();
+  const [totalIdeas, setTotalIdeas] = useState(0);
+  const [swipeList, setSwipeList] = useState([]);
+  const [idea, setIdea] = useState('');
+
   const {authenticated, ready} = usePrivy();
 
   const [ideaList, setIdeaList] = useState([]);
@@ -18,55 +23,119 @@ export const Create = () => {
   const [one_liner, setOne_liner] = useState('');
 
   useEffect(() => {
-    const getIdeaList = async () => {
+    const getPrivyAddress = () => {
+      let embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy');
+      let newPrivyAddress = embeddedWallet?.address;
+
+      if (newPrivyAddress !== undefined && newPrivyAddress !== privyAddress) {
+        setPrivyAddress(newPrivyAddress);
+      }
+    };
+
+    getPrivyAddress();
+  });
+
+  const getIdeaList = async () => {
+    try {
+      if (ready == true && authenticated == true && privyAddress !== '') {
+        let ids = await contract.getIdeaList(privyAddress);
+
+        let newIdeaList = [];
+
+        responses = await Promise.all(
+          ids.map(async (id) => {
+            let res1 = await contract.getIdea(id);
+            let res2 = await contract.getIterations(id);
+
+            let res = {
+              id: id,
+              ...res1,
+              ...res2,
+            };
+
+            newIdeaList.push(res);
+          }),
+        );
+
+        setIdeaList(newIdeaList);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    const getTheIdeaList = async () => {
       try {
-        if (authenticated) {
-          const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy');
-          const privyAddress = embeddedWallet.address;
+        if (ready == true && authenticated == true && privyAddress !== '') {
+          let ids = await contract.getIdeaList(privyAddress);
 
-          const res = await fetch('/api/userIdeas', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              address: privyAddress,
+          let newIdeaList = [];
+
+          let responses = await Promise.all(
+            ids.map(async (id) => {
+              let res1 = await contract.getIdea(id);
+              let res2 = await contract.getIterations(id);
+
+              let res = {
+                id: id,
+                ...res1,
+                ...res2,
+              };
+
+              newIdeaList.push(res);
             }),
-          });
-          const data = await res.json();
+          );
 
-          setIdeaList(data.ideaList);
+          setIdeaList(newIdeaList);
         }
       } catch (err) {
         console.log(err);
       }
     };
 
-    getIdeaList();
-  });
+    getTheIdeaList();
+  }, [activeTab]);
 
-  const submitIdea = async () => {
+  const makeIteration = async ({vote}) => {
     try {
-      if (authenticated) {
-        const embeddedWallet = wallets.find((wallet) => wallet.walletClientType === 'privy');
-        const privyAddress = embeddedWallet.address;
+      const res = await fetch('/api/makeIteration', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: 101,
+          title: title,
+          one_liner: one_liner,
+          isNew: 1,
+          userAddress: privyAddress,
+        }),
+      });
 
-        const res = await fetch('/api/addIdea', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            address: privyAddress,
-            title: title,
-            one_liner: one_liner,
-          }),
-        });
-      }
+      getIdeaList();
     } catch (err) {
       console.log(err);
     }
   };
+
+  const getIdeaObject = (thisIdea) => {
+    // console.log(idea);
+
+    let ideaObject = {
+      id: thisIdea.id,
+      title: thisIdea[0][0],
+      one_liner: thisIdea[0][1],
+      gases: thisIdea.gases.toNumber(),
+      hmms: thisIdea.hmms.toNumber(),
+    };
+
+    // console.log(`idea object is`, ideaObject);
+
+    return ideaObject;
+  };
+
+  console.log(ideaList);
 
   return (
     <React.Fragment>
@@ -95,7 +164,7 @@ export const Create = () => {
             />
             <button
               disabled={one_liner === '' || title == '' ? true : false}
-              onClick={submitIdea}
+              onClick={makeIteration}
               className={clsx(
                 'appearance-none rounded-lg border-none py-1 font-bold uppercase text-isWhite drop-shadow-sm ',
                 one_liner === '' || title == ''
@@ -107,8 +176,8 @@ export const Create = () => {
             </button>
           </div>
           {ideaList !== [] ? (
-            ideaList.map((idea, ideaIndex) => {
-              return <Idea key={ideaIndex} idea={idea} ideaIndex={ideaIndex} isEditable={true} />;
+            ideaList.toReversed().map((idea, ideaIndex) => {
+              return <Idea key={getIdeaObject(idea).id} idea={getIdeaObject(idea)} />;
             })
           ) : (
             <></>

@@ -205,7 +205,7 @@ export default function DashboardPage() {
           <Tabs />
           <div className="no-scrollbar flex h-full max-h-[78vh] w-full flex-col space-y-3 overflow-y-scroll rounded-2xl bg-isGrayLightEmphasis6 p-3">
             <Swipe />
-            {/* <Create /> */}
+            <Create />
           </div>
         </div>
       </div>
