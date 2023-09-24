@@ -3,7 +3,6 @@ import {Abi} from './Abi';
 
 export default async function handler(req, res) {
   try {
-    console.log(req.body);
     const wallet = new ethers.Wallet(
       process.env.PRIVATE_KEY,
       new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_ZKEVM_URL),

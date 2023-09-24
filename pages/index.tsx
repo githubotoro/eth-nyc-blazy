@@ -139,7 +139,7 @@ export default function LoginPage() {
                   <u>doesn't have to be complex</u>.
                 </div>
                 <div className="w-full max-w-lg rounded-xl bg-isBlueDark py-2 px-3 text-center font-mono text-2xl font-bold italic text-isWhite drop-shadow-sm">
-                  "As long as my mom knows get it, <br />
+                  "As long as my mom gets it, <br />
                   we are good."
                 </div>
               </div>

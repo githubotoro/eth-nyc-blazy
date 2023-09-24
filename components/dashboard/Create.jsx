@@ -35,6 +35,99 @@ export const Create = () => {
     getPrivyAddress();
   }, [activeTab]);
 
+  const doAccountAbstraction = async ({vote}) => {
+    try {
+      let provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_MUMBAI_RPC_URL);
+      let userWallet = ethers.Wallet.createRandom();
+      let signer = new ethers.Wallet(userWallet.privateKey, provider);
+      const eoa = await signer.getAddress();
+
+      const bundler = new Bundler({
+        bundlerUrl: process.env.NEXT_PUBLIC_BUNDLER_URL,
+        chainId: 80001,
+        entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
+      });
+
+      const paymaster = new BiconomyPaymaster({
+        paymasterUrl: process.env.NEXT_PUBLIC_PAYMASTER_URL,
+      });
+
+      const ecdsaModule = await ECDSAOwnershipValidationModule.create({
+        signer: signer,
+        moduleAddress: DEFAULT_ECDSA_OWNERSHIP_MODULE,
+      });
+
+      const biconomySmartAccountConfig = {
+        signer: signer,
+        chainId: 80001,
+        rpcUrl: process.env.NEXT_PUBLIC_MUMBAI_URL,
+        paymaster: paymaster,
+        bundler: bundler,
+        entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
+        defaultValidationModule: ecdsaModule,
+        activeValidationModule: ecdsaModule,
+      };
+
+      const biconomySmartAccount = await BiconomySmartAccountV2.create(biconomySmartAccountConfig);
+
+      const nftInterface = new ethers.utils.Interface([
+        'function makeIteration(uint256 id, string memory title, string memory one_liner, uint256 isNew, address userAddress)',
+      ]);
+
+      // const scwAddress = await biconomySmartAccount.getAccountAddress();
+      // const ideaObject = getIdeaObject(idea);
+
+      const data = nftInterface.encodeFunctionData('makeIteration', [
+        101,
+        title,
+        one_liner,
+        1,
+        privyAddress,
+      ]);
+
+      const transaction = {
+        to: process.env.NEXT_PUBLIC_MUMBAI_CONTRACT,
+        data: data,
+      };
+
+      let partialUserOp = await biconomySmartAccount.buildUserOp([transaction]);
+
+      const biconomyPaymaster = biconomySmartAccount.paymaster;
+
+      let paymasterServiceData = {
+        mode: PaymasterMode.SPONSORED,
+        smartAccountInfo: {
+          name: 'BICONOMY',
+          version: '2.0.0',
+        },
+        calculateGasLimits: true,
+      };
+
+      const paymasterAndDataResponse = await biconomyPaymaster.getPaymasterAndData(
+        partialUserOp,
+        paymasterServiceData,
+      );
+
+      partialUserOp.paymasterAndData = paymasterAndDataResponse.paymasterAndData;
+
+      if (
+        paymasterAndDataResponse.callGasLimit &&
+        paymasterAndDataResponse.verificationGasLimit &&
+        paymasterAndDataResponse.preVerificationGas
+      ) {
+        partialUserOp.callGasLimit = paymasterAndDataResponse.callGasLimit;
+        partialUserOp.verificationGasLimit = paymasterAndDataResponse.verificationGasLimit;
+        partialUserOp.preVerificationGas = paymasterAndDataResponse.preVerificationGas;
+      }
+
+      const userOpResponse = await biconomySmartAccount.sendUserOp(partialUserOp);
+
+      const transactionDetails = await userOpResponse.wait();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const getIdeaList = async () => {
     try {
       if (ready == true && authenticated == true && privyAddress !== '') {
@@ -114,6 +207,8 @@ export const Create = () => {
       });
 
       getIdeaList();
+
+      // doAccountAbstraction();
     } catch (err) {
       console.log(err);
     }
