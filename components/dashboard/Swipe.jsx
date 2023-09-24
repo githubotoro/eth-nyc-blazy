@@ -101,6 +101,38 @@ export const Swipe = () => {
     return ideaObject;
   };
 
+  const doVote = async ({vote}) => {
+    try {
+      const ideaObject = getIdeaObject(idea);
+
+      const res = await fetch('/api/doVote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: ideaObject.id,
+          vote: vote,
+          userAddress: privyAddress,
+        }),
+      });
+
+      let ideaSwipeList = swipeList;
+
+      if (ideaSwipeList.length !== 0) {
+        setIdea(ideaSwipeList[ideaSwipeList.length - 1]);
+      } else {
+        setIdea('');
+      }
+
+      ideaSwipeList.pop();
+
+      setSwipeList(ideaSwipeList);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <React.Fragment>
       {activeTab == 1 ? (
@@ -110,10 +142,20 @@ export const Swipe = () => {
               <Idea idea={getIdeaObject(idea)} />
 
               <div className="flex w-full max-w-md flex-row justify-around space-x-1 rounded-xl text-xl font-bold uppercase">
-                <button className="w-1/2 rounded-md bg-isRedLight py-1 uppercase transition-all duration-200 ease-in-out hover:bg-isWhite hover:text-isRedLight">
+                <button
+                  onClick={() => {
+                    doVote({vote: 1});
+                  }}
+                  className="w-1/2 rounded-md bg-isRedLight py-1 uppercase transition-all duration-200 ease-in-out hover:bg-isWhite hover:text-isRedLight"
+                >
                   Hmm
                 </button>
-                <button className="w-1/2 rounded-md bg-isGreenLight py-1 uppercase text-isSystemDarkTertiary transition-all duration-200 ease-in-out hover:bg-isWhite hover:text-isGreenLight">
+                <button
+                  onClick={() => {
+                    doVote({vote: 2});
+                  }}
+                  className="w-1/2 rounded-md bg-isGreenLight py-1 uppercase text-isSystemDarkTertiary transition-all duration-200 ease-in-out hover:bg-isWhite hover:text-isGreenLight"
+                >
                   Gas
                 </button>
               </div>
