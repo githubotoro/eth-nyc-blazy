@@ -2,7 +2,6 @@ import Image from 'next/image';
 import React, {useState} from 'react';
 
 export const Idea = ({idea}) => {
-  console.log(idea);
   const getImage = (index) => {
     if (index === 0) {
       return <Image src="/assets/spectreseek.webp" fill className="absolute object-cover" />;

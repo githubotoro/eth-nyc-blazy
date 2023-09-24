@@ -22,6 +22,7 @@ import PrivyConfigContext, {
   PRIVY_STORAGE_KEY,
 } from '../lib/hooks/usePrivyConfig';
 import useMediaQuery from '../lib/hooks/useMediaQuery';
+import Image from 'next/image';
 
 const mobileQuery = '(max-width: 768px)';
 
@@ -108,7 +109,7 @@ export default function LoginPage() {
   return (
     <>
       <Head>
-        <title>Privy Demo</title>
+        <title>Blazy | Hmm/Gas</title>
       </Head>
       <div className="flex h-full max-w-screen-2xl flex-col bg-privy-color-background px-6 pb-6">
         <Header />
@@ -120,15 +121,29 @@ export default function LoginPage() {
         >
           Login
         </button>
+
         <CanvasContainer>
-          <div>
-            adasd as dasd assadsa dassaasd as dsa asd asds ds das as dsad sad asdsa dsd sad asd
-            asdsa d
-          </div>
           {/* start: canvas-panel */}
-          <Canvas className="min-h-screen md:place-content-center">
+          <Canvas className="h-fit place-content-center items-center">
             {/* start: modal-column */}
             <div id="render-privy" className="z-[2] mx-auto pt-8 md:mx-0 md:h-full md:pt-0 " />
+
+            <div className="flex flex-col items-center">
+              <div className="relative aspect-video w-full max-w-md overflow-hidden rounded-2xl drop-shadow-sm">
+                <Image src="/banner.png" fill />
+              </div>
+
+              <div className="flex w-full flex-col items-center pb-3">
+                <div className="w-full max-w-lg py-5 px-3 text-center text-2xl">
+                  The <b>idea</b>&nbsp;to on-board the <i>next 10 billion</i>&nbsp;users to web3 --
+                  <u>doesn't have to be complex</u>.
+                </div>
+                <div className="w-full max-w-lg rounded-xl bg-isBlueDark py-2 px-3 text-center font-mono text-2xl font-bold italic text-isWhite drop-shadow-sm">
+                  "As long as my mom knows get it, <br />
+                  we are good."
+                </div>
+              </div>
+            </div>
             {/* end: modal-column */}
           </Canvas>
           {/* end: canvas-panel */}
